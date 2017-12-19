@@ -67,6 +67,14 @@ namespace SortTestHelper {
         
         return;
     }
+    
+    // 拷贝数组
+    int* copyIntArray(int a[], int n) {
+        int* arr = new int[n];
+        copy(a, a+n,arr);
+        return arr;
+    }
+    
 }
 
 
