@@ -29,16 +29,32 @@ void selectionSort(int arr[], int n) {
     }
 }
 
+
+#warning 对于一个近乎有序的数组，插入排序的性能效率是非常高的
+#warning 当数组几乎有序的话，时间效率是近乎 O(n) 的 ！！！！
+
 // ## 插入排序
 // ##
 void insertionSort(int arr[],int n) {
     
     for (int i = 0; i < n; i ++) {
         for (int j = i; j > 0 && arr[j] < arr[j - 1]; j--) {
-            swap(arr[j], arr[j - 1]);
+            swap(arr[j], arr[j - 1]); // 每次交换，还是比较消耗性能的
         }
     }
+}
+
+// ## 插入排序优化
+void insertionSort2(int arr[],int n) {
     
+    for (int i = 0; i < n; i++) {
+        int e = arr[i];
+        int j;
+        for (j = i; j > 0 && arr[j - 1] > e; j--) {
+            arr[j] = arr[j-1];
+        }
+        arr[j] = e;
+    }
 }
 
 
@@ -50,7 +66,7 @@ int main(int argc, char * argv[]) {
         int *arr2 = SortTestHelper::copyIntArray(arr, n);
         
         SortTestHelper::testSort("选择排序", selectionSort, arr, n);
-        SortTestHelper::testSort("插入排序", insertionSort, arr2, n);
+        SortTestHelper::testSort("插入排序", insertionSort2, arr2, n);
         
         
         delete[] arr;
