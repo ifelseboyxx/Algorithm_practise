@@ -90,6 +90,8 @@ void insertionSort2(int arr[],int n) {
 // ## 冒泡排序
 // ## 时间复杂度 O(n^2)
 
+#warning 对于完全有序的数组，冒泡排序法也将成为O(n)级别的算法
+
 /**
  在生活中应该也会看到气泡从水里面出来时，越到水面上气泡就会变的越大。在物理上学气压的时候好像也看到过这种现象；其实理解冒泡排序就可以根据这种现象来理解：每一次遍历，都把大的往后面排（当然也可以把小的往后面排），所以每一次都可以把无序中最大的（最小）的元素放到无序的最后面（或者说有序元素的最开始）；
  */
@@ -136,18 +138,24 @@ int main(int argc, char * argv[]) {
         int n = 10000;
         int *arr = SortTestHelper::generateRandomArray(n,0,n);
         int *arr2 = SortTestHelper::copyIntArray(arr, n);
+        int *arr2x = SortTestHelper::generateNearlyOrderedArray(n, 3);
         int *arr3 = SortTestHelper::copyIntArray(arr, n);
         int *arr4 = SortTestHelper::copyIntArray(arr, n);
+        int *arr5 = SortTestHelper::generateNearlyOrderedArray(n, 3);
         
         SortTestHelper::testSort("选择排序", selectionSort2, arr, n);
         SortTestHelper::testSort("插入排序", insertionSort2, arr2, n);
+        SortTestHelper::testSort("插入排序(几乎有序数组)", insertionSort2, arr2x, n);
         SortTestHelper::testSort("冒泡排序", BubbleSort, arr3, n);
         SortTestHelper::testSort("冒泡排序优化", BubbleSort2, arr4, n);
+        SortTestHelper::testSort("冒泡排序优化(几乎有序数组)", BubbleSort2, arr5, n);
         
         delete[] arr;
         delete[] arr2;
+        delete[] arr2x;
         delete[] arr3;
         delete[] arr4;
+        delete[] arr5;
         
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
