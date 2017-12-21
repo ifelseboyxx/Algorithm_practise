@@ -29,6 +29,36 @@ void selectionSort(int arr[], int n) {
     }
 }
 
+// ## 选择排序优化
+// 在每一轮中, 可以同时找到当前未处理元素的最大值和最小值
+void selectionSort2(int arr[], int n) {
+    
+    int left = 0, right = n - 1;
+    while(left < right){
+        int minIndex = left;
+        int maxIndex = right;
+        
+        // 在每一轮查找时, 要保证arr[minIndex] <= arr[maxIndex]
+        if(arr[minIndex] > arr[maxIndex]) {
+            swap(arr[minIndex], arr[maxIndex]);
+        }
+        
+        for(int i = left + 1 ; i < right; i ++) {
+            if(arr[i] < arr[minIndex]) {
+                minIndex = i;
+            }else if(arr[i] > arr[maxIndex])
+                maxIndex = i;
+        }
+        
+        swap(arr[left], arr[minIndex]);
+        swap(arr[right], arr[maxIndex]);
+        
+        left ++;
+        right --;
+    }
+
+}
+
 
 #warning 对于一个近乎有序的数组，插入排序的性能效率是非常高的
 #warning 当数组几乎有序的话，时间效率是近乎 O(n) 的 ！！！！
@@ -62,12 +92,12 @@ void insertionSort2(int arr[],int n) {
 int main(int argc, char * argv[]) {
     @autoreleasepool {
         
-        int n = 10000;
+        int n = 20000;
         int *arr = SortTestHelper::generateRandomArray(n,0,n);
         int *arr2 = SortTestHelper::copyIntArray(arr, n);
         
         SortTestHelper::testSort("选择排序", selectionSort, arr, n);
-        SortTestHelper::testSort("插入排序", insertionSort2, arr2, n);
+        SortTestHelper::testSort("选择排序优化", selectionSortX, arr2, n);
         
         
         delete[] arr;
