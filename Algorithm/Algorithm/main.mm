@@ -34,11 +34,11 @@ void selectionSort(int arr[], int n) {
 #warning 当数组几乎有序的话，时间效率是近乎 O(n) 的 ！！！！
 
 // ## 插入排序
-// ##
+// ## 时间复杂度 (n*n)
 void insertionSort(int arr[],int n) {
     
     for (int i = 0; i < n; i ++) {
-        for (int j = i; j > 0 && arr[j] < arr[j - 1]; j--) {
+        for (int j = i; j > 0 && arr[j] < arr[j - 1]; j--) { // 依次往 i 的前面元素检查，
             swap(arr[j], arr[j - 1]); // 每次交换，还是比较消耗性能的
         }
     }
@@ -53,10 +53,11 @@ void insertionSort2(int arr[],int n) {
         for (j = i; j > 0 && arr[j - 1] > e; j--) {
             arr[j] = arr[j-1];
         }
-        arr[j] = e;
+        arr[j] = e;  // 这里只是简单的赋值， 未优化前，一次交换相当于 3 次赋值
     }
 }
 
+#warning  - 冒泡排序 ？ 希尔排序 ？
 
 int main(int argc, char * argv[]) {
     @autoreleasepool {
