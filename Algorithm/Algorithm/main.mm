@@ -17,6 +17,8 @@ using namespace std;
 
 // ## 选择排序
 // ## 时间复杂度 O(n^2)
+// ## 不稳定
+
 void selectionSort(int arr[], int n) {
     for (int i = 0; i < n; i++) {
         int minIndex = i; // 定义最小值为 i
@@ -56,15 +58,15 @@ void selectionSort2(int arr[], int n) {
         left ++;
         right --;
     }
-
+    
 }
-
 
 #warning 对于一个近乎有序的数组，插入排序的性能效率是非常高的
 #warning 当数组几乎有序的话，时间效率是近乎 O(n) 的 ！！！！
 
 // ## 插入排序
 // ## 时间复杂度 O(n^2)
+// ## 稳定
 void insertionSort(int arr[],int n) {
     
     for (int i = 0; i < n; i ++) {
@@ -73,6 +75,7 @@ void insertionSort(int arr[],int n) {
         }
     }
 }
+
 
 // ## 插入排序优化
 void insertionSort2(int arr[],int n) {
@@ -87,9 +90,37 @@ void insertionSort2(int arr[],int n) {
     }
 }
 
+// ## shell 排序 （缩小增量排序）
+// ## 也属于插入排序的一种
+// ## 平均时间 O(nlogn) 最差时间O(n^s) 1<s<2
+// 不稳定
+void shellSort(int arr[], int n){
+    
+    // 计算 increment sequence: 1, 4, 13, 40, 121, 364, 1093...
+    int h = 1;
+    while( h < n/3 ) {
+        h = 3 * h + 1;
+    }
+    
+    while( h >= 1 ){
+        
+        // h-sort the array
+        for( int i = h ; i < n ; i ++ ){
+            // 对 arr[i], arr[i-h], arr[i-2*h], arr[i-3*h]... 使用插入排序
+            int e = arr[i];
+            int j;
+            for( j = i ; j >= h && arr[j-h] > e; j -= h )
+                arr[j] = arr[j-h];
+            arr[j] = e;
+        }
+        
+        h = h/3;
+    }
+}
+
 // ## 冒泡排序
 // ## 时间复杂度 O(n^2)
-
+// ## 稳定
 #warning 对于完全有序的数组，冒泡排序法也将成为O(n)级别的算法
 
 /**
@@ -127,7 +158,7 @@ void BubbleSort2(int arr[],int n) {
         }
         
         n = newn;// 更新 n 的 值
-
+        
     }while(newn > 0);
     
 }
@@ -138,10 +169,11 @@ int main(int argc, char * argv[]) {
         int n = 10000;
         int *arr = SortTestHelper::generateRandomArray(n,0,n);
         int *arr2 = SortTestHelper::copyIntArray(arr, n);
-        int *arr2x = SortTestHelper::generateNearlyOrderedArray(n, 3);
+        int *arr2x = SortTestHelper::generateNearlyOrderedArray(n, 8);
         int *arr3 = SortTestHelper::copyIntArray(arr, n);
         int *arr4 = SortTestHelper::copyIntArray(arr, n);
         int *arr5 = SortTestHelper::generateNearlyOrderedArray(n, 3);
+        int *arr6 = SortTestHelper::copyIntArray(arr, n);
         
         SortTestHelper::testSort("选择排序", selectionSort2, arr, n);
         SortTestHelper::testSort("插入排序", insertionSort2, arr2, n);
@@ -149,6 +181,7 @@ int main(int argc, char * argv[]) {
         SortTestHelper::testSort("冒泡排序", BubbleSort, arr3, n);
         SortTestHelper::testSort("冒泡排序优化", BubbleSort2, arr4, n);
         SortTestHelper::testSort("冒泡排序优化(几乎有序数组)", BubbleSort2, arr5, n);
+        SortTestHelper::testSort("希尔排序", shellSort, arr6, n);
         
         delete[] arr;
         delete[] arr2;
@@ -156,6 +189,7 @@ int main(int argc, char * argv[]) {
         delete[] arr3;
         delete[] arr4;
         delete[] arr5;
+        delete[] arr6;
         
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
