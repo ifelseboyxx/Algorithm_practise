@@ -6,6 +6,10 @@
 //  Copyright © 2017年 ifelseboyxx. All rights reserved.
 //
 
+// 性能对比分析
+//http://blog.csdn.net/li563868273/article/details/51200876
+
+
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
@@ -76,7 +80,6 @@ void insertionSort(int arr[],int n) {
     }
 }
 
-
 // ## 插入排序优化
 void insertionSort2(int arr[],int n) {
     
@@ -109,14 +112,16 @@ void shellSort(int arr[], int n){
             // 对 arr[i], arr[i-h], arr[i-2*h], arr[i-3*h]... 使用插入排序
             int e = arr[i];
             int j;
-            for( j = i ; j >= h && arr[j-h] > e; j -= h )
+            for( j = i ; j >= h && arr[j-h] > e; j -= h ){
                 arr[j] = arr[j-h];
+            }
             arr[j] = e;
         }
         
         h = h/3;
     }
 }
+
 
 // ## 冒泡排序
 // ## 时间复杂度 O(n^2)
@@ -137,10 +142,10 @@ void BubbleSort(int arr[],int n) {
                 swaped = true;
             }
         }
-        
         n--;
     }while(swaped);
 }
+
 
 // ## 冒泡排序优化
 void BubbleSort2(int arr[],int n) {
@@ -166,22 +171,30 @@ void BubbleSort2(int arr[],int n) {
 int main(int argc, char * argv[]) {
     @autoreleasepool {
         
+        
+        
         int n = 10000;
         int *arr = SortTestHelper::generateRandomArray(n,0,n);
         int *arr2 = SortTestHelper::copyIntArray(arr, n);
-        int *arr2x = SortTestHelper::generateNearlyOrderedArray(n, 8);
+        int *arr2x = SortTestHelper::generateNearlyOrderedArray(n, 5);
         int *arr3 = SortTestHelper::copyIntArray(arr, n);
         int *arr4 = SortTestHelper::copyIntArray(arr, n);
         int *arr5 = SortTestHelper::generateNearlyOrderedArray(n, 3);
         int *arr6 = SortTestHelper::copyIntArray(arr, n);
+
+//        SortTestHelper::testSort("选择排序", selectionSort, arr, n);
+//        SortTestHelper::testSort("选择排序-优化", selectionSort2, arr2, n);
+//        SortTestHelper::testSort("插入排序", insertionSort, arr, n);
+        SortTestHelper::testSort("shell 排序", shellSort, arr2, n);
+        SortTestHelper::testSort("冒泡排序", BubbleSort2, arr2x, n);
+
         
-        SortTestHelper::testSort("选择排序", selectionSort2, arr, n);
-        SortTestHelper::testSort("插入排序", insertionSort2, arr2, n);
-        SortTestHelper::testSort("插入排序(几乎有序数组)", insertionSort2, arr2x, n);
-        SortTestHelper::testSort("冒泡排序", BubbleSort, arr3, n);
-        SortTestHelper::testSort("冒泡排序优化", BubbleSort2, arr4, n);
-        SortTestHelper::testSort("冒泡排序优化(几乎有序数组)", BubbleSort2, arr5, n);
-        SortTestHelper::testSort("希尔排序", shellSort, arr6, n);
+//        SortTestHelper::testSort("插入排序", insertionSort2, arr2, n);
+//        SortTestHelper::testSort("插入排序(几乎有序数组)", insertionSort2, arr2x, n);
+//        SortTestHelper::testSort("冒泡排序", BubbleSort, arr3, n);
+//        SortTestHelper::testSort("冒泡排序优化", BubbleSort2, arr4, n);
+//        SortTestHelper::testSort("冒泡排序优化(几乎有序数组)", BubbleSort2, arr5, n);
+//        SortTestHelper::testSort("希尔排序", shellSort, arr6, n);
         
         delete[] arr;
         delete[] arr2;
